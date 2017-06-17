@@ -26,11 +26,11 @@ public class screenLevel1 extends screen implements Levels
 		//player.setHP(200);
 		healthBar.setBarHP(80);
 		healthBar.maxHP = 120;
-		floor.setX(0);
-		floor.setY(0);
-		floor.setWidth(margen * 8);
+		//floor.setX(0);
+		//floor.setY(0);
+		//floor.setWidth(margen * 8);
 		player.setHeight(margen);
-		floor.setHeight(8 * .99f * margen * texture.getHeight() / texture.getWidth());
+		//floor.setHeight(8 * .99f * margen * texture.getHeight() / texture.getWidth());
 		actors.add(player);
 
 		actingActor = dummy;

@@ -86,21 +86,17 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 	{
 		// TODO: Implement this method
 
-		//uiText = "level 1 completed";
-
 		actors.clear();
 		stage.getActors().clear();
 
 		player = new stdPlayer(playerTexture);
 		player.setPosition(margen * 1, margen * 1);
-		//player.setHP(200);
+		
 		healthBar.setBarHP(80);
 		healthBar.maxHP = 120;
-		floor.setX(0);
-		floor.setY(0);
-		floor.setWidth(margen * 8);
+		
 		player.setHeight(margen);
-		floor.setHeight(8 * .99f * margen * texture.getHeight() / texture.getWidth());
+		
 		actors.add(player);
 
 		actingActor = dummy;
@@ -124,9 +120,6 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 
 		stage.addActor(blood);
 
-		
-		
-		
 	}
 	
 
@@ -153,7 +146,7 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 				player.setFatigue(30);
 				
 				assests.potionSound.play();
-				//thisGame.setScreen(new screen(thisGame,batch));
+				
 			}
 		}
 
@@ -174,10 +167,9 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 			if (player.getPlayerState() == stdPlayerState.READY)
 			{
 				player.setPlayerState(stdPlayerState.GUARD);
-				//drawRects(player);
 				actingActor = player;
 				player.setFatigue(player.GUARD);
-				//music2.play();
+				
 			}
 		}
 	}
@@ -198,7 +190,7 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 				player.setPlayerState(stdPlayerState.ATTACK_TARGETING);
 				drawRects(player);
 				actingActor = player;
-				//music2.play();
+				
 			}
 		}
 
@@ -270,7 +262,6 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 	Texture playerTexture;
 	Texture enemyTexture;
 	Message message;
-	stdCharacter floor;
 	stdPlayer player;
 	MyActor actingActor;
 	stdEnemy enemy;
@@ -308,7 +299,7 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 	private Viewport uiViewport;
     private Camera camera;
 	Vector3 touchVec;
-	//Map map;
+	
 	TextureRegion tileRegion;
 	TextureRegion brickRegion;
 	TextureRegion grassRegion;
@@ -339,8 +330,9 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 		hmiWidth = 360;
 		rand = new RandomXS128();
 		margen = 64;
-		camera = new OrthographicCamera(hmiWidth, hmiHeight);
-        viewport = new FitViewport(hmiWidth, hmiHeight, camera);
+		camera = new OrthographicCamera(hmiWidth*.6f, hmiHeight*.6f);
+        ((OrthographicCamera)camera).zoom=.6f;
+		viewport = new ScreenViewport(camera);
 		uiViewport = new FitViewport(hmiWidth, hmiHeight);
         stage = new Stage(viewport);
 		uiStage = new Stage(uiViewport);
@@ -349,7 +341,8 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 		table.setFillParent(true);
 		uiStage.addActor(table);
 		assests = new Assests();
-
+		
+		
 		music2 = assests.music;
 		music1 = assests.music2;
 
@@ -359,7 +352,6 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 		enemyTexture = assests.enemy;
 		healthBar = new HealthBar();
 
-		//closeUp = new CloseUp(assests);
 		message = new Message();
 		tilesTexture = assests.tiles;
 		tileRegion = new TextureRegion(tilesTexture, tileSize * 19, tileSize * 6, tileSize, tileSize);
@@ -369,16 +361,13 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 		doorRegion = new TextureRegion(tilesTexture, tileSize * 5, tileSize * 19, tileSize, tileSize);
 		shape = new ShapeRenderer();
 		blood = new Blood(shape);
-		floor = new stdCharacter(texture);
+		
 		dummy = new stdEnemy(enemyTexture,9999,9999,"dummy");
 		actors = new ArrayList<MyActor>();
 		readys = new ArrayList<MyActor>();
 
-
         InputMultiplexer im = new InputMultiplexer();
         GestureDetector gd = new GestureDetector(this);
-
-		//InputProcessor in = new InputProcessor(this);
 		
         im.addProcessor(gd);
         im.addProcessor(uiStage);
@@ -400,8 +389,6 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 
 		mydialog.welcome().show();
 
-
-
 		table.addActor(ui.getAttackButton());
 		table.addActor(ui.getMoveButton());
 		table.addActor(ui.getHealthBar());
@@ -410,11 +397,8 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 		table.addActor(ui.getGuardButton());
 		table.addActor(ui.getItemButton());
 
-
 		initScreen();
 		maps = new Maps(assests);
-
-
 
 	}
 	
@@ -433,7 +417,6 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 		batch.setProjectionMatrix(camera.combined);
 		shape.setProjectionMatrix(camera.combined);
 
-
 		if (music1.getPosition() <= 3 && music1.getVolume() <= 1)	
 		{
 			music1.setVolume(music1.getVolume() + 0.03f);
@@ -444,12 +427,11 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 
 		}
 
-
 		for (MyActor actor : actors)
 		{
 			if (actor.getPlayerState() == stdPlayerState.FINISH)
 			{
-				//actingActor = dummy;
+				
 				actor.setPlayerState(stdPlayerState.WAITING);
 			}
 			if(actor.getHP()<=0)
@@ -459,7 +441,6 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 
 			}
 			
-
 		}
 
 		if (maps.getMap()[(int)player.getX() / margen][(int)player.getY() / margen] == 5)
@@ -519,9 +500,6 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 			uiStage.getBatch().draw(actor.getTurnTexture(), hmiWidth - 34 - sangria, hmiHeight - 16 - 48 * turn, 32, 32);
 			sangria = 0;
 
-			//font.setColor(Color.RED);
-			//font.setScale(.5f);
-			//font.draw(uiStage.getBatch(), actor.getName()+" "+actor.getPlayerState(), hmiWidth - 100, hmiHeight - 128 - 34 * turn);
 			uiStage.getBatch().end();
 
 			turn++;
@@ -532,7 +510,7 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 
 
 		}
-		//initDebugger();
+		
 		turn = 1;
 	}
 
@@ -712,6 +690,11 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 	{
 		// Fakedlight system (alpha blending)
 
+		hmiHeight=360;
+		hmiWidth=640;
+		camera.viewportHeight=p2;
+		camera.viewportWidth=p1;
+		
 // if lightBuffer was created before, dispose, we recreate a new one
 		
 
@@ -760,7 +743,7 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 	{
 		// TODO: Implement this method
 
-		//camera.position.set(p1, p2 , 0);
+
 		currentzoom=newzoom;
 		
 		
@@ -975,14 +958,14 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 	{
 		// TODO: Implement this method
 		
-		newzoom=(currentzoom+(inicialDistance-finalDistance)*.005f);
-		if(newzoom>3)
+		newzoom=(currentzoom+(inicialDistance-finalDistance)*.001f);
+		if(newzoom>.6)
 			{
-			newzoom=3;
+			newzoom=.6f;
 			}
-		if(newzoom<.5f)
+		if(newzoom<.1f)
 		{
-			newzoom=0.5f;
+			newzoom=.1f;
 		}
 		((OrthographicCamera)this.stage.getCamera()).zoom=newzoom;
 		return false;
