@@ -24,7 +24,7 @@ public class Ui
 	Dialog  endDialog;
 	
 	int tileSize=32;
-	int margen=64;
+	int margen=64*3;
 	
 	TextButtonStyle textButtonStyle;
 	
@@ -116,12 +116,12 @@ public class Ui
 		
 		attackButton = new TextButton("", textButtonStyle);
 		attackButton.setPosition(1000, 200);
-		attackButton.setBounds(0,0,64,64);
+		attackButton.setBounds(0,0,margen,margen);
 		
 		
 		moveButton = new TextButton("", textButtonStyle2);
-		moveButton.setPosition(64, 64);
-		moveButton.setBounds(0,0,64,64);
+		moveButton.setPosition(margen, margen);
+		moveButton.setBounds(0,0,margen,margen);
 		
 		guardButton = new TextButton("", guardStyle);
 		guardButton.setPosition(margen*3, margen);

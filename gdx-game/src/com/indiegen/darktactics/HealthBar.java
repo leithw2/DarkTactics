@@ -33,6 +33,10 @@ public class HealthBar extends Actor
 		setBarHP(160);
 		setMaxHP(160);
 		setBarMP(80);
+		setX(256);
+		setY(160);
+		setHeight(16);
+		setWidth(348);
 
 	}
 
@@ -79,18 +83,18 @@ public class HealthBar extends Actor
 		shape.setProjectionMatrix(batch.getProjectionMatrix());
 
 		shape.setColor(Color.ORANGE);
-		shape.rect(65,49,82,8);
+		shape.rect(getX(),getY(),getWidth(),getHeight());
 		
 		
 		shape.setColor(Color.RED);
-		shape.rect(66, 50, getBarHP()*80/getMaxHP(), 6);
+		shape.rect(getX(), getY(), getBarHP()*getWidth()/getMaxHP(), getHeight());
 
 		shape.setColor(Color.BLACK);
-		shape.rect(66,43,80,3);	
+		shape.rect(getX(),getY()-36,getWidth(),getHeight());	
 		
 		
 		shape.setColor(Color.CYAN);
-		shape.rect(66, 43, barMP, 3);
+		shape.rect(getX(), getY()-36, getWidth(), getHeight());
 		
 		
 
@@ -100,8 +104,8 @@ public class HealthBar extends Actor
 		batch.begin();
 		text=barHP+"";
 		font.setColor(Color.RED);
-		font.setScale(.7f);
-		font.draw(batch, text, 130, 64);
+		font.setScale(3f);
+		font.draw(batch, text, getX(), getY()+64);
 		
 	}
 }

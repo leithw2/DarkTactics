@@ -31,7 +31,7 @@ public class MyDialog
 		Label label1 = new Label("Level 1 completed", style);
 		label1.setAlignment(Align.center);
 		label1.setWrap(true);
-		//style.font.setScale(1, -1);
+		style.font.setScale(3);
 		style.fontColor = Color.WHITE;
 
 		Skin tileSkin = new Skin();
@@ -54,7 +54,7 @@ public class MyDialog
 													   Color.LIGHT_GRAY);
 		textButtonStyle.over = tileSkin.newDrawable("white", Color.LIGHT_GRAY);
 		textButtonStyle.font = _fontChat;
-		textButtonStyle.font.setScale(1, 1);
+		textButtonStyle.font.setScale(3);
 		textButtonStyle.fontColor = Color.BLACK;
 		tileSkin.add("default", textButtonStyle);
 
@@ -69,7 +69,7 @@ public class MyDialog
 			{
 				// force dialog width
 				// return Gdx.graphics.getWidth() / 2;
-				return 200f;
+				return 400f;
 			}
 
 			@Override
@@ -77,7 +77,7 @@ public class MyDialog
 			{
 				// force dialog height
 				// return Gdx.graphics.getWidth() / 2;
-				return 200f;
+				return 400f;
 			}
 		};
 		dialog.setModal(true);
@@ -129,7 +129,7 @@ public class MyDialog
 		Drawable drawable = new TextureRegionDrawable(myTex);
 		dialog.setBackground(drawable);
 
-		float btnSize = 64f;
+		float btnSize = 256f;
 		Table t = new Table();
 		//t.debug();
 		t.center();
@@ -181,7 +181,7 @@ public class MyDialog
 													   Color.LIGHT_GRAY);
 		textButtonStyle.over = tileSkin.newDrawable("white", Color.LIGHT_GRAY);
 		textButtonStyle.font = _fontChat;
-		textButtonStyle.font.setScale(1, 1);
+		textButtonStyle.font.setScale(3);
 		textButtonStyle.fontColor = Color.BLACK;
 		tileSkin.add("default", textButtonStyle);
 
@@ -196,7 +196,7 @@ public class MyDialog
 			{
 				// force dialog width
 				// return Gdx.graphics.getWidth() / 2;
-				return 200f;
+				return 600f;
 			}
 
 			@Override
@@ -204,7 +204,7 @@ public class MyDialog
 			{
 				// force dialog height
 				// return Gdx.graphics.getWidth() / 2;
-				return 200f;
+				return 600f;
 			}
 		};
 		dialog.setModal(true);
@@ -239,8 +239,8 @@ public class MyDialog
 					//Do whatever here for cancel
 
 
-					dialog.hide();
-					dialog.cancel();
+					//dialog.hide();
+					//dialog.cancel();
 					dialog.remove();  
 					myCallBack.buttonRestart();
 
@@ -256,7 +256,7 @@ public class MyDialog
 		Drawable drawable = new TextureRegionDrawable(myTex);
 		dialog.setBackground(drawable);
 
-		float btnSize = 64f;
+		float btnSize = 256f;
 		Table t = new Table();
 		//t.debug();
 		t.center();
@@ -268,7 +268,7 @@ public class MyDialog
 		dialog.getContentTable().add(label1).padTop(50f);
 //
 		t.add(btnYes).width(btnSize).height(btnSize).pad(10f).padBottom(50f);
-		t.add(btnNo).width(btnSize).height(btnSize).pad(10f).padBottom(50f);
+		//t.add(btnNo).width(btnSize).height(btnSize).pad(10f).padBottom(50f);
 //dialog.getButtonTable().pad(10f);
 //
 		dialog.getButtonTable().add(t);
@@ -313,7 +313,7 @@ public class MyDialog
 														   Color.LIGHT_GRAY);
 			textButtonStyle.over = tileSkin.newDrawable("white", Color.LIGHT_GRAY);
 			textButtonStyle.font = _fontChat;
-			textButtonStyle.font.setScale(1, 1);
+			textButtonStyle.font.setScale(3);
 			textButtonStyle.fontColor = Color.BLACK;
 			tileSkin.add("default", textButtonStyle);
 
@@ -328,7 +328,7 @@ public class MyDialog
 				{
 					// force dialog width
 					// return Gdx.graphics.getWidth() / 2;
-					return 200f;
+					return 600f;
 				}
 
 				@Override
@@ -336,7 +336,7 @@ public class MyDialog
 				{
 					// force dialog height
 					// return Gdx.graphics.getWidth() / 2;
-					return 200f;
+					return 600f;
 				}
 			};
 			dialog.setModal(true);
@@ -370,7 +370,7 @@ public class MyDialog
 			Drawable drawable = new TextureRegionDrawable(myTex);
 			dialog.setBackground(drawable);
 
-			float btnSize = 64f;
+			float btnSize = 256f;
 			Table t = new Table();
 			//t.debug();
 			t.center();
@@ -379,7 +379,7 @@ public class MyDialog
 			dialog.getContentTable().center();
 			//dialog.add("duuuu");
 
-			dialog.getContentTable().add(label1).width(200).padTop(50f);
+			dialog.getContentTable().add(label1).width(400).padTop(50f);
 //
 			t.add(btnYes).width(btnSize).height(btnSize).pad(10f).padBottom(50f);
 			//t.add(btnNo).width(btnSize).height(btnSize).pad(10f);
@@ -423,7 +423,7 @@ public class MyDialog
 													   Color.LIGHT_GRAY);
 		textButtonStyle.over = tileSkin.newDrawable("white", Color.LIGHT_GRAY);
 		textButtonStyle.font = _fontChat;
-		textButtonStyle.font.setScale(1, 1);
+		textButtonStyle.font.setScale(3);
 		textButtonStyle.fontColor = Color.BLACK;
 		tileSkin.add("default", textButtonStyle);
 
@@ -438,7 +438,7 @@ public class MyDialog
 			{
 				// force dialog width
 				// return Gdx.graphics.getWidth() / 2;
-				return 200f;
+				return 600f;
 			}
 
 			@Override
@@ -446,7 +446,7 @@ public class MyDialog
 			{
 				// force dialog height
 				// return Gdx.graphics.getWidth() / 2;
-				return 200f;
+				return 600f;
 			}
 		};
 		dialog.setModal(true);
@@ -498,7 +498,7 @@ public class MyDialog
 		Drawable drawable = new TextureRegionDrawable(myTex);
 		dialog.setBackground(drawable);
 
-		float btnSize = 64f;
+		float btnSize = 256f;
 		Table t = new Table();
 		//t.debug();
 		t.center();
