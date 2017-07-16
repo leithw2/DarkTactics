@@ -11,7 +11,7 @@ public class game extends Game implements ApplicationListener
 
 	Batch batch;
 	SpriteBatch spriteBatch;
-	screen screen1;
+	titleScreen screen1;
 	Assests assests;
 	
 	
@@ -27,7 +27,7 @@ public class game extends Game implements ApplicationListener
 		//assests = new Assests();
 		batch = new SpriteBatch();
 	    //world = new World(new Vector2(1,1),true);
-		screen1= new screen(this,batch);
+		screen1= new titleScreen(this,batch);
 		setScreen(screen1);
 		
 		// TODO: Implement this method

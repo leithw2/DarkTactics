@@ -18,7 +18,6 @@ import java.util.*;
 
 import com.badlogic.gdx.Game;
 
-
 public class screen implements Screen, GestureListener, callBack, Levels, InputProcessor
 {
 
@@ -86,21 +85,18 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 	{
 		// TODO: Implement this method
 
-		//uiText = "level 1 completed";
-
 		actors.clear();
 		stage.getActors().clear();
 
 		player = new stdPlayer(playerTexture);
 		player.setPosition(margen * 1, margen * 1);
-		//player.setHP(200);
-		healthBar.setBarHP(80);
-		healthBar.maxHP = 120;
-		floor.setX(0);
-		floor.setY(0);
-		floor.setWidth(margen * 8);
+		hmiHeight = 640;
+		hmiWidth = 360;
+		//healthBar.setBarHP(80);
+		//healthBar.maxHP = 120;
+		
 		player.setHeight(margen);
-		floor.setHeight(8 * .99f * margen * texture.getHeight() / texture.getWidth());
+		
 		actors.add(player);
 
 		actingActor = dummy;
@@ -110,11 +106,11 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 		music1.play();
 		music1.setVolume(0);
 
-		//actors.add(new stdEnemy(enemyTexture, margen * 4, margen * 5, "1"));
-		//actors.add(new stdEnemy(enemyTexture, margen * 10, margen * 6, "2"));
-		//actors.add(new stdEnemy(enemyTexture, margen * 5, margen * 5, "3"));
-		//actors.add(new stdEnemy(enemyTexture, margen * 3, margen * 1, "4"));
-		actors.add(new KingSkeleton(assests.kingSkeleton, margen*18,margen*6,"Boss"));
+		actors.add(new stdEnemy(enemyTexture, margen * 4, margen * 5, "1"));
+		actors.add(new stdEnemy(enemyTexture, margen * 10, margen * 6, "2"));
+		actors.add(new stdEnemy(enemyTexture, margen * 5, margen * 5, "3"));
+		actors.add(new stdEnemy(enemyTexture, margen * 3, margen * 1, "4"));
+		//actors.add(new KingSkeleton(assests.kingSkeleton, margen*18,margen*6,"Boss"));
 		
 		for (MyActor actor : actors)
 		{
@@ -123,10 +119,9 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 		readys.clear();
 
 		stage.addActor(blood);
+		
+		mydialog.welcome().show();
 
-		
-		
-		
 	}
 	
 
@@ -134,7 +129,7 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 	public void buttonItem()
 	{
 		// TODO: Implement this method
-
+		
 		if (player.getPlayerState() == stdPlayerState.ITEM)
 		{
 			player.setPlayerState(stdPlayerState.READY);
@@ -153,7 +148,7 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 				player.setFatigue(30);
 				
 				assests.potionSound.play();
-				//thisGame.setScreen(new screen(thisGame,batch));
+				
 			}
 		}
 
@@ -174,10 +169,9 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 			if (player.getPlayerState() == stdPlayerState.READY)
 			{
 				player.setPlayerState(stdPlayerState.GUARD);
-				//drawRects(player);
 				actingActor = player;
 				player.setFatigue(player.GUARD);
-				//music2.play();
+				
 			}
 		}
 	}
@@ -198,7 +192,7 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 				player.setPlayerState(stdPlayerState.ATTACK_TARGETING);
 				drawRects(player);
 				actingActor = player;
-				//music2.play();
+				
 			}
 		}
 
@@ -239,7 +233,10 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 	{
 		// TODO: Implement this method
 		text = "thanks for playing";
+		state = screenState.FINISH;
+		
 		initScreen();
+		
 	}
 
 
@@ -270,14 +267,13 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 	Texture playerTexture;
 	Texture enemyTexture;
 	Message message;
-	stdCharacter floor;
 	stdPlayer player;
 	MyActor actingActor;
 	stdEnemy enemy;
 	MyActor dummy;
 	ArrayList<MyActor> actors;
 	ArrayList<MyActor> readys;
-	HealthBar healthBar;
+	
 	MyDialog dialog;
 	Blood blood;
 	Stage stage;
@@ -286,10 +282,10 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 
 	int tileSize=32;
 	int margen;
-	int hmiHeight=1440;
-	int hmiWidth=2560;
-	float currentzoom=1;
-	float newzoom=1;
+	int hmiHeight;
+	int hmiWidth;
+	float currentzoom=1f;
+	float newzoom=1f;
 	
 	int actorsReady;
 	float touchX=0;
@@ -307,15 +303,15 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 	private Viewport viewport;
 	private Viewport uiViewport;
     private Camera camera;
+	Camera uiCamera;
 	Vector3 touchVec;
-	//Map map;
+	
 	TextureRegion tileRegion;
 	TextureRegion brickRegion;
 	TextureRegion grassRegion;
 	TextureRegion groundRegion;
 	TextureRegion doorRegion;
 	callBack mycallback;
-	int countActors;
 
 	Texture tilesTexture;
 	StateMachine stateMachine;
@@ -327,7 +323,7 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 	TextureRegion lightBufferRegion;
 	Music music2;
 	Music music1;
-	long id;
+	
 
 	public screen(Game game, Batch batch)
 	{
@@ -340,8 +336,9 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 		rand = new RandomXS128();
 		margen = 64;
 		camera = new OrthographicCamera(hmiWidth, hmiHeight);
-        viewport = new FitViewport(hmiWidth, hmiHeight, camera);
-		uiViewport = new FitViewport(hmiWidth, hmiHeight);
+        uiCamera = new OrthographicCamera(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+		viewport = new ScreenViewport(camera);
+		uiViewport = new FillViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
         stage = new Stage(viewport);
 		uiStage = new Stage(uiViewport);
 		viewport.apply();
@@ -349,7 +346,8 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 		table.setFillParent(true);
 		uiStage.addActor(table);
 		assests = new Assests();
-
+		
+		
 		music2 = assests.music;
 		music1 = assests.music2;
 
@@ -357,9 +355,8 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 		texture = assests.texture;
 		playerTexture  = assests.hero21;
 		enemyTexture = assests.enemy;
-		healthBar = new HealthBar();
+		
 
-		//closeUp = new CloseUp(assests);
 		message = new Message();
 		tilesTexture = assests.tiles;
 		tileRegion = new TextureRegion(tilesTexture, tileSize * 19, tileSize * 6, tileSize, tileSize);
@@ -369,16 +366,13 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 		doorRegion = new TextureRegion(tilesTexture, tileSize * 5, tileSize * 19, tileSize, tileSize);
 		shape = new ShapeRenderer();
 		blood = new Blood(shape);
-		floor = new stdCharacter(texture);
+		
 		dummy = new stdEnemy(enemyTexture,9999,9999,"dummy");
 		actors = new ArrayList<MyActor>();
 		readys = new ArrayList<MyActor>();
 
-
         InputMultiplexer im = new InputMultiplexer();
         GestureDetector gd = new GestureDetector(this);
-
-		//InputProcessor in = new InputProcessor(this);
 		
         im.addProcessor(gd);
         im.addProcessor(uiStage);
@@ -391,17 +385,16 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 		font = new BitmapFont(); 
 		ui = new Ui(this, assests);	
 
-		ui.getAttackButton().setPosition(hmiWidth - margen, 0);
-		ui.getMoveButton().setPosition(hmiWidth - margen * 2, 0);		
-		ui.getGuardButton().setPosition(hmiWidth - margen, 64);
-		ui.getItemButton().setPosition(hmiWidth - margen * 2, 64);
-
+//		ui.getAttackButton().setPosition(uiViewport.getScreenWidth() - margen*3, 0);
+//		ui.getMoveButton().setPosition(uiViewport.getScreenWidth()  - margen*3 * 2, 0);		
+//		ui.getGuardButton().setPosition(uiViewport.getScreenWidth() - margen*3, margen*3);
+//		ui.getItemButton().setPosition(uiViewport.getScreenWidth() - margen*3 * 2, margen*3);
+//
 		mydialog = new MyDialog(this, uiStage, assests);
 
-		mydialog.welcome().show();
-
-
-
+		//mydialog.welcome().show();
+		//mydialog.levelCompleted().show();
+		
 		table.addActor(ui.getAttackButton());
 		table.addActor(ui.getMoveButton());
 		table.addActor(ui.getHealthBar());
@@ -410,12 +403,10 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 		table.addActor(ui.getGuardButton());
 		table.addActor(ui.getItemButton());
 
-
 		initScreen();
 		maps = new Maps(assests);
-
-
-
+		
+		
 	}
 	
 
@@ -426,13 +417,13 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 
 		Gdx.gl.glClearColor(0, 0, 0, 0);
 	    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		//Gdx.graphics.getGL20().glEnable(GL20.GL_BLEND); // Or GL20
+		
 		camera.position.set(player.getX() + player.getWidth() / 2, player.getY() + player.getHeight() / 2 , 0);
 		camera.update();
+		uiCamera.position.set(uiCamera.viewportWidth/2,uiCamera.viewportHeight/2,0);
 
 		batch.setProjectionMatrix(camera.combined);
 		shape.setProjectionMatrix(camera.combined);
-
 
 		if (music1.getPosition() <= 3 && music1.getVolume() <= 1)	
 		{
@@ -444,12 +435,11 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 
 		}
 
-
 		for (MyActor actor : actors)
 		{
 			if (actor.getPlayerState() == stdPlayerState.FINISH)
 			{
-				//actingActor = dummy;
+				
 				actor.setPlayerState(stdPlayerState.WAITING);
 			}
 			if(actor.getHP()<=0)
@@ -459,7 +449,6 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 
 			}
 			
-
 		}
 
 		if (maps.getMap()[(int)player.getX() / margen][(int)player.getY() / margen] == 5)
@@ -492,14 +481,16 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 
 		if (actingActor == player && player.getPlayerState() == stdPlayerState.ATTACK_TARGETING)
 		{
-			ui.getMessage().setText("Select Target");
+			ui.getMessage().setText(ui.getAttackButton().getX()+"");
 		}
 		
 		
 		stage.draw();
 		stage.act();
 		drawLights();
+		//newzoom=.6f;
 
+		//uiStage.getBatch().setProjectionMatrix(uiCamera.combined);
 		uiStage.draw();
 		removeDeads();
 		drawTurns();
@@ -516,12 +507,9 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 
 
 			uiStage.getBatch().begin();
-			uiStage.getBatch().draw(actor.getTurnTexture(), hmiWidth - 34 - sangria, hmiHeight - 16 - 48 * turn, 32, 32);
+			uiStage.getBatch().draw(actor.getTurnTexture(), uiViewport.getScreenWidth() - 34*3 - sangria, uiViewport.getScreenHeight() - 160 - 48*3 * turn, 32*3, 32*3);
 			sangria = 0;
 
-			//font.setColor(Color.RED);
-			//font.setScale(.5f);
-			//font.draw(uiStage.getBatch(), actor.getName()+" "+actor.getPlayerState(), hmiWidth - 100, hmiHeight - 128 - 34 * turn);
 			uiStage.getBatch().end();
 
 			turn++;
@@ -532,7 +520,7 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 
 
 		}
-		//initDebugger();
+		
 		turn = 1;
 	}
 
@@ -712,6 +700,37 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 	{
 		// Fakedlight system (alpha blending)
 
+		//hmiHeight=360;
+		//hmiWidth=640;
+		camera.viewportHeight=p2/2;
+		camera.viewportWidth=p1/2;
+		
+		
+		uiViewport.setScreenWidth(p1);
+		uiViewport.setScreenHeight(p2);
+		
+//		uiCamera.update();
+		//uiViewport.setCamera(uiCamera);
+		
+		((OrthographicCamera)this.uiStage.getCamera()).setToOrtho(false,p1,p2);
+		
+		
+		if(p1>p2){
+		ui.getAttackButton().setPosition(p1 - margen*3-160, 0);
+		ui.getMoveButton().setPosition(p1  - margen*3*2-160, 0);		
+		ui.getGuardButton().setPosition(p1 - margen*3-160, margen*3);
+		ui.getItemButton().setPosition(p1 - margen*3*2-160, margen*3);
+		
+		}
+		else
+		{
+			ui.getAttackButton().setPosition(p1 - margen*3, 0);
+			ui.getMoveButton().setPosition(p1  - margen*3 * 2, 0);		
+			ui.getGuardButton().setPosition(p1 - margen*3, margen*3);
+			ui.getItemButton().setPosition(p1 - margen*3 * 2, margen*3);
+			
+			
+		}
 // if lightBuffer was created before, dispose, we recreate a new one
 		
 
@@ -721,7 +740,9 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 	@Override
 	public void show()
 	{
-
+		//((OrthographicCamera)this.stage.getCamera()).zoom=.6f;
+		
+		
 		// TODO: Implement this method
 	}
 
@@ -759,10 +780,7 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 	public boolean touchDown(float p1, float p2, int p3, int p4)
 	{
 		// TODO: Implement this method
-
-		//camera.position.set(p1, p2 , 0);
 		currentzoom=newzoom;
-		
 		
 		return false;
 	}
@@ -949,7 +967,7 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 	public boolean fling(float p1, float p2, int p3)
 	{
 
-
+		
 		return false;
 	}
 
@@ -975,16 +993,18 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 	{
 		// TODO: Implement this method
 		
-		newzoom=(currentzoom+(inicialDistance-finalDistance)*.005f);
-		if(newzoom>3)
+		newzoom=(currentzoom+(inicialDistance-finalDistance)*.001f);
+		if(newzoom>1)
 			{
-			newzoom=3;
+			newzoom=1f;
 			}
-		if(newzoom<.5f)
+		if(newzoom<.3f)
 		{
-			newzoom=0.5f;
+			newzoom=.3f;
 		}
 		((OrthographicCamera)this.stage.getCamera()).zoom=newzoom;
+		
+		
 		return false;
 	}
 
@@ -998,116 +1018,6 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 		return false;
 	}
 	
-
-	void drawLights2()
-	{
-
-		// start rendering to the lightBuffer
-		
-		
-		lightBuffer = new FrameBuffer(Format.RGBA8888, (int)camera.viewportWidth, (int)camera.viewportHeight, false);
-
-		lightBuffer.getColorBufferTexture().setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
-
-		lightBufferRegion = new TextureRegion(lightBuffer.getColorBufferTexture(), 0, 0, (int)camera.viewportWidth, (int)camera.viewportHeight);
-
-		lightBufferRegion.flip(false, true);
-		
-		
-		lightBuffer.begin();
-
-// setup the right blending
-		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
-		Gdx.gl.glEnable(GL20.GL_BLEND);
-		Gdx.gl.glBlendEquation(GL20.GL_FUNC_REVERSE_SUBTRACT);
-
-// set the ambient color values, this is the "global" light of your scene
-// imagine it being the sun.  Usually the alpha value is just 1, and you change the darkness/brightness with the Red, Green and Blue values for best effect
-
-		Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1f);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-// start rendering the lights to our spriteBatch
-		batch.begin();
-
-
-// set the color of your light (red,green,blue,alpha values)
-		batch.setColor(0.9f, 0.9f, .9f, .9f);
-
-// tx and ty contain the center of the light source
-		float tx= (camera.position.x - camera.viewportWidth*newzoom / 2);
-		float ty= (camera.position.y - camera.viewportHeight*newzoom / 2);
-
-// tw will be the size of the light source based on the "distance"
-// (the light image is 128x128)
-// and 96 is the "distance"  
-// Experiment with this value between based on your game resolution 
-// my lights are 8 up to 128 in distance
-		//float tw=assests.light.getWidth();
-
-// make sure the center is still the center based on the "distance"
-		float tw=camera.viewportWidth*newzoom;
-		float th=camera.viewportHeight*newzoom;
-
-		float lightSize =64;
-		float lightWidth =256;
-		float lightHeight =256;
-		
-		
-// and render the sprite
-		batch.draw(assests.light, camera.position.x - assests.light.getWidth() / 2, camera.position.y - assests.light.getHeight() / 2, assests.light.getWidth(), assests.light.getHeight());
-		batch.draw(assests.light, 64 * 3 - lightSize/2, -lightSize/2, lightWidth, lightHeight);
-		batch.draw(assests.light, 64 * 0 - lightSize/2, 64 * 6 - lightSize/2, lightWidth, lightHeight);
-		batch.draw(assests.light, 64 * 4 - lightSize/2, 64 * 2 - lightSize/2, lightWidth, lightHeight);
-		batch.draw(assests.light, 64 * 6 - lightSize/2, 64 * 3 - lightSize/2, lightWidth, lightHeight);
-		batch.end();
-
-		stage.getBatch().begin();
-		stage.getBatch().setColor(0.9f, 0.9f, .9f, 1f);
-		stage.getBatch().draw(assests.light, camera.position.x - assests.light.getWidth() / 2, camera.position.y - assests.light.getHeight() / 2, assests.light.getWidth(), assests.light.getHeight());
-		//stage.getBatch().setColor(0.9f, 0.0f, .0f, 1f);
-		stage.getBatch().draw(assests.light, 64 * 3 - lightSize/2, -lightSize/2, lightWidth, lightHeight);
-		stage.getBatch().draw(assests.light, 64 * 0 - lightSize/2, 64 * 6 - lightSize/2, lightWidth, lightHeight);
-		stage.getBatch().draw(assests.light, 64 * 4 - lightSize/2, 64 * 2 - lightSize/2, lightWidth, lightHeight);
-		stage.getBatch().draw(assests.light, 64 * 6 - lightSize/2, 64 * 3 - lightSize/2, lightWidth, lightHeight);
-		//stage.getBatch().draw(assests.light, 0, 0, 400, 400);
-		stage.getBatch().end();
-
-
-		lightBuffer.end();
-
-
-// now we render the lightBuffer to the default "frame buffer"
-// with the right blending !
-
-		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-		//Gdx.gl.glBlendEquation(GL20.GL_FUNC_ADD);
-
-
-		batch.begin();
-		batch.setColor(0.9f, 0.9f, .9f, .9f);
-		batch.draw(lightBufferRegion, tx, ty, tw, th);               
-		//batch.draw(lightBufferRegion, tx+64*3, ty, tw, th);
-		batch.end();
-
-		stage.getBatch().begin();
-		stage.getBatch().setColor(0.9f, .9f, .9f, .9f);
-		stage.getBatch().draw(lightBufferRegion, tx, ty, tw, th);               
-		//stage.getBatch().draw(lightBufferRegion, tx+64*3, ty, tw, th);
-		stage.getBatch().end();
-
-
-		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
-		Gdx.gl.glDisable(GL20.GL_BLEND);
-		Gdx.gl.glBlendEquation(GL20.GL_FUNC_ADD);
-		//Gdx.gl20.glBlendFunc(
-// post light-rendering
-// you might want to render your statusbar stuff here
-
-
-	}
-	
-
 	void drawLights()
 	{
 
@@ -1115,15 +1025,11 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 
 		if (lightBuffer != null) 
 			lightBuffer.dispose();
+			
 		lightBuffer = new FrameBuffer(Format.RGBA8888, (int)camera.viewportWidth, (int)camera.viewportHeight, false);
-
 		lightBuffer.getColorBufferTexture().setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
-
 		lightBufferRegion = new TextureRegion(lightBuffer.getColorBufferTexture(), 0, 0, (int)camera.viewportWidth, (int)camera.viewportHeight);
-
 		lightBufferRegion.flip(false, true);
-
-
 		lightBuffer.begin();
 
 // setup the right blending
@@ -1139,8 +1045,6 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 
 // start rendering the lights to our spriteBatch
 		batch.begin();
-
-
 // set the color of your light (red,green,blue,alpha values)
 		batch.setColor(0.9f, 0.9f, .9f, .9f);
 
@@ -1148,14 +1052,6 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 		float tx= (camera.position.x - camera.viewportWidth*newzoom / 2);
 		float ty= (camera.position.y - camera.viewportHeight*newzoom / 2);
 
-// tw will be the size of the light source based on the "distance"
-// (the light image is 128x128)
-// and 96 is the "distance"  
-// Experiment with this value between based on your game resolution 
-// my lights are 8 up to 128 in distance
-		//float tw=assests.light.getWidth();
-
-// make sure the center is still the center based on the "distance"
 		float tw=camera.viewportWidth*newzoom;
 		float th=camera.viewportHeight*newzoom;
 

@@ -434,10 +434,10 @@ class stdEnemy extends MyActor implements stdActor
 			shape.begin(ShapeType.Filled);	
 			shape.setProjectionMatrix(batch.getProjectionMatrix());
 
-			for (MyRect rect : rects)
-			{
-				drawRect(rect);
-			}
+//			for (MyRect rect : rects)
+//			{
+//				drawRect(rect);
+//			}
 			shape.end();
 			Gdx.gl.glDisable(GL20.GL_BLEND);
 			batch.begin();

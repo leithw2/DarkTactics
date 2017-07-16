@@ -25,6 +25,6 @@ public class CloseUp extends Actor
     public void draw(Batch batch, float parentAlpha)
 	{  
 	
-		batch.draw(closeUp,0,0,64,64);
+		batch.draw(closeUp,0,0,64*3,64*3);
 	}
 }
