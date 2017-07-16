@@ -96,9 +96,10 @@ public class titles extends Actor
 		
 		batch.draw(column,143,176,column.getWidth(),column.getHeight());
 		
-		batch.draw(logoText,30,120,logoText.getWidth()/10,logoText.getHeight()/10);
-		batch.draw(icon,30,200,icon.getWidth()/10,icon.getHeight()/10);
-		font.draw(batch,"Tap to Start",50,160);
+		batch.draw(logoText,180/2-logoText.getWidth()/20,150,logoText.getWidth()/10,logoText.getHeight()/10);
+		batch.draw(icon,180/2-icon.getWidth()/20,190,icon.getWidth()/10,icon.getHeight()/10);
+		
+		font.draw(batch,"Tap to Start",50,130);
 		batch.end();
 		
 		
