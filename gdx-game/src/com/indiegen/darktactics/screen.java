@@ -125,7 +125,7 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 	}
 	
 
-	@Override
+	
 	public void buttonItem()
 	{
 		// TODO: Implement this method
@@ -156,7 +156,7 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 
 	}
 
-	@Override
+	
 	public void buttonGuard()
 	{
 		// TODO: Implement this method

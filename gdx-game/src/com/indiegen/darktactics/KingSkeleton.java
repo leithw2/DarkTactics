@@ -20,7 +20,7 @@ public class KingSkeleton extends stdEnemy implements stdActor
 		setHeight(128);
 		setWidth(128);
 
-		setName("Skeleton "+ name);
+		setName("king");
 
 		attack = 15;
 
