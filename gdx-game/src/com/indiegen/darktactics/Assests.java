@@ -8,8 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 
 public class Assests
 {
-	
-	public Texture texture = new Texture(Gdx.files.internal("floor.png"));
     
 	//public Texture hero = new Texture(Gdx.files.internal("hero.jpg"));
 	public Texture hero21 = new Texture(Gdx.files.internal("hero22.png"));

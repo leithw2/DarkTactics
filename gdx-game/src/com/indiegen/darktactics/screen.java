@@ -125,7 +125,7 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 	}
 	
 
-	@Override
+	
 	public void buttonItem()
 	{
 		// TODO: Implement this method
@@ -156,7 +156,7 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 
 	}
 
-	@Override
+	
 	public void buttonGuard()
 	{
 		// TODO: Implement this method
@@ -352,7 +352,7 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 		music1 = assests.music2;
 
 
-		texture = assests.texture;
+		//texture = assests.texture;
 		playerTexture  = assests.hero21;
 		enemyTexture = assests.enemy;
 		
@@ -367,7 +367,7 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 		shape = new ShapeRenderer();
 		blood = new Blood(shape);
 		
-		dummy = new stdEnemy(enemyTexture,9999,9999,"dummy");
+		dummy = new stdEnemy(tilesTexture,9999,9999,"dummy");
 		actors = new ArrayList<MyActor>();
 		readys = new ArrayList<MyActor>();
 
