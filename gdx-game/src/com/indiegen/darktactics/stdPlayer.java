@@ -13,6 +13,35 @@ import java.util.*;
 class stdPlayer extends MyActor implements stdActor
 {
 
+	@Override
+	public void setMoveDone(boolean moveDone)
+	{
+		// TODO: Implement this method
+		this.moveDone= moveDone;
+	}
+
+	@Override
+	public Boolean isMoveDone()
+	{
+		// TODO: Implement this method
+		return moveDone;
+	}
+
+	@Override
+	public void setActionDone(boolean actionDone)
+	{
+		// TODO: Implement this method
+		this.actionDone=actionDone;
+	}
+
+	@Override
+	public Boolean isActionDone()
+	{
+		// TODO: Implement this method
+		return actionDone;
+	}
+
+
 	public void setPotions(int potions)
 	{
 		this.potions = potions;
@@ -84,7 +113,7 @@ class stdPlayer extends MyActor implements stdActor
 	
 	final int WALK=20;
 	final int RUN=50;
-	final int GUARD=20;
+	final int GUARD=10;
 	final int HEAVYATTACK=90;
 	final int ROLL=30;
 	final int JUMP=50;
@@ -97,12 +126,14 @@ class stdPlayer extends MyActor implements stdActor
 	TextureRegion[] attackFrames;
 	TextureRegion[] waitFrames;
 	TextureRegion[] walkFrames;
+	TextureRegion[] guardFrames;
 	TextureRegion currentFrame;
 	TextureRegion turnTexture;
+
 	Animation attackAnimation;
 	Animation waitAnimation;
 	Animation walkAnimation;
-	
+	Animation guardAnimation;
 	BoundingBox boundingBox;
 	Rectangle rectangle;
 	Rectangle rectUp;
@@ -129,7 +160,10 @@ class stdPlayer extends MyActor implements stdActor
 	boolean dead=false;
 	int fatigue=0;
 	Boolean acting=false;
+	boolean moveDone=false;
+	boolean actionDone=false;
 	int potions = 1;
+	int defence=0;
 	
 	
 	public stdPlayer(Texture settexture)
@@ -175,6 +209,13 @@ class stdPlayer extends MyActor implements stdActor
 		walkFrames[1] = new TextureRegion(texture, 32, 64, 32, 32);
 
 		walkAnimation = new Animation(0.8f, walkFrames);
+		
+		guardFrames = new TextureRegion[1];
+
+		guardFrames[0] = new TextureRegion(texture, 96, 64, 32, 32);
+		//guardFrames[1] = new TextureRegion(texture, 96, 32, 32, 32);
+
+		guardAnimation = new Animation(0.8f, guardFrames);
 		
 		
 		
@@ -278,7 +319,10 @@ class stdPlayer extends MyActor implements stdActor
 
 				animation=attackAnimation;
 				break;
+			case 3:
 
+				animation=guardAnimation;
+				break;
 		}
 	}
 
@@ -306,13 +350,30 @@ class stdPlayer extends MyActor implements stdActor
 	}
 
 
+	@Override
+	public void setDefence(int defence)
+	{
+		this.defence = defence;
+	}
+
+	@Override
+	public int getDefence()
+	{
+		return defence;
+	}
+
+	
+
 
 	@Override
 	public void setDamage(int damage)
 	{
 		// TODO: Implement this method
-		this.damage=damage;
-		setHP(getHP() - damage);
+		this.damage=damage-getDefence();
+		if(this.damage<0)
+			this.damage=0;
+
+		setHP(getHP() - this.damage);
 	}
 
 	@Override

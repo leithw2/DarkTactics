@@ -362,7 +362,7 @@ public enum stdPlayerState implements StateMachine<MyActor>
 		{
 			// TODO: Implement this method
 			actor.setAnimation(3);
-			actor.setDefence(10);
+			actor.setDefence(5);
 			
 			return null;
 		}

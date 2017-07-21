@@ -9,6 +9,33 @@ import com.badlogic.gdx.graphics.*;
 public class MyActor extends Actor implements stdActor
 {
 
+	@Override
+	public void setMoveDone(boolean move)
+	{
+		// TODO: Implement this method
+	}
+
+	@Override
+	public Boolean isMoveDone()
+	{
+		// TODO: Implement this method
+		return null;
+	}
+
+	@Override
+	public void setActionDone(boolean move)
+	{
+		// TODO: Implement this method
+	}
+
+	@Override
+	public Boolean isActionDone()
+	{
+		// TODO: Implement this method
+		return null;
+	}
+	
+
 	
 	public void setTexture(Texture texture)
 	{

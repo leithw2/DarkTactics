@@ -15,6 +15,12 @@ public interface stdActor
 	public void setDamage(int damage);
 	public int getDamage();
 
+	public void setMoveDone(boolean move);
+	public Boolean isMoveDone();
+	
+	public void setActionDone(boolean move);
+	public Boolean isActionDone();
+	
 	public boolean isDead();
 	public void dead();
 	

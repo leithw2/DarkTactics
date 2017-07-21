@@ -46,8 +46,8 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 	public boolean touchDown(int p1, int p2, int p3, int p4)
 	{
 		// TODO: Implement this method
-		
-		
+
+
 		return false;
 	}
 
@@ -94,9 +94,9 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 		hmiWidth = 360;
 		//healthBar.setBarHP(80);
 		//healthBar.maxHP = 120;
-		
+
 		player.setHeight(margen);
-		
+
 		actors.add(player);
 
 		actingActor = dummy;
@@ -111,7 +111,7 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 		actors.add(new stdEnemy(enemyTexture, margen * 5, margen * 5, "3"));
 		actors.add(new stdEnemy(enemyTexture, margen * 3, margen * 1, "4"));
 		//actors.add(new KingSkeleton(assests.kingSkeleton, margen*18,margen*6,"Boss"));
-		
+
 		for (MyActor actor : actors)
 		{
 			stage.addActor(actor);
@@ -119,17 +119,17 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 		readys.clear();
 
 		stage.addActor(blood);
-		
+
 		mydialog.welcome().show();
 
 	}
-	
 
-	
+
+
 	public void buttonItem()
 	{
 		// TODO: Implement this method
-		
+
 		if (player.getPlayerState() == stdPlayerState.ITEM)
 		{
 			player.setPlayerState(stdPlayerState.READY);
@@ -146,9 +146,9 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 
 				actingActor = player;
 				player.setFatigue(30);
-				
+
 				assests.potionSound.play();
-				
+
 			}
 		}
 
@@ -156,7 +156,7 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 
 	}
 
-	
+
 	public void buttonGuard()
 	{
 		// TODO: Implement this method
@@ -171,7 +171,7 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 				player.setPlayerState(stdPlayerState.GUARD);
 				actingActor = player;
 				player.setFatigue(player.GUARD);
-				
+				player.setActionDone(true);
 			}
 		}
 	}
@@ -192,7 +192,7 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 				player.setPlayerState(stdPlayerState.ATTACK_TARGETING);
 				drawRects(player);
 				actingActor = player;
-				
+
 			}
 		}
 
@@ -208,7 +208,8 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 		}
 		else
 		{
-			if (player.getPlayerState() == stdPlayerState.READY)
+			if (player.getPlayerState() == stdPlayerState.READY
+			&& !player.isMoveDone())
 			{
 
 				player.setPlayerState(stdPlayerState.WAITING_TO_MOVE);
@@ -234,9 +235,9 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 		// TODO: Implement this method
 		text = "thanks for playing";
 		state = screenState.FINISH;
-		
+
 		initScreen();
-		
+
 	}
 
 
@@ -273,20 +274,20 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 	MyActor dummy;
 	ArrayList<MyActor> actors;
 	ArrayList<MyActor> readys;
-	
+
 	MyDialog dialog;
 	Blood blood;
 	Stage stage;
 	Stage uiStage;
 	Table table;
 
-	int tileSize=32;
+	int tileSize=64;
 	int margen;
 	int hmiHeight;
 	int hmiWidth;
 	float currentzoom=1f;
 	float newzoom=1f;
-	
+
 	int actorsReady;
 	float touchX=0;
 	float touchY=0;
@@ -305,7 +306,7 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
     private Camera camera;
 	Camera uiCamera;
 	Vector3 touchVec;
-	
+
 	TextureRegion tileRegion;
 	TextureRegion brickRegion;
 	TextureRegion grassRegion;
@@ -323,7 +324,7 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 	TextureRegion lightBufferRegion;
 	Music music2;
 	Music music1;
-	
+
 
 	public screen(Game game, Batch batch)
 	{
@@ -336,9 +337,9 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 		rand = new RandomXS128();
 		margen = 64;
 		camera = new OrthographicCamera(hmiWidth, hmiHeight);
-        uiCamera = new OrthographicCamera(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+        uiCamera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		viewport = new ScreenViewport(camera);
-		uiViewport = new FillViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+		uiViewport = new FillViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         stage = new Stage(viewport);
 		uiStage = new Stage(uiViewport);
 		viewport.apply();
@@ -346,8 +347,8 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 		table.setFillParent(true);
 		uiStage.addActor(table);
 		assests = new Assests();
-		
-		
+
+
 		music2 = assests.music;
 		music1 = assests.music2;
 
@@ -355,7 +356,7 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 		//texture = assests.texture;
 		playerTexture  = assests.hero21;
 		enemyTexture = assests.enemy;
-		
+
 
 		message = new Message();
 		tilesTexture = assests.tiles;
@@ -366,14 +367,14 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 		doorRegion = new TextureRegion(tilesTexture, tileSize * 5, tileSize * 19, tileSize, tileSize);
 		shape = new ShapeRenderer();
 		blood = new Blood(shape);
-		
-		dummy = new stdEnemy(tilesTexture,9999,9999,"dummy");
+
+		dummy = new stdEnemy(tilesTexture, 9999, 9999, "dummy");
 		actors = new ArrayList<MyActor>();
 		readys = new ArrayList<MyActor>();
 
         InputMultiplexer im = new InputMultiplexer();
         GestureDetector gd = new GestureDetector(this);
-		
+
         im.addProcessor(gd);
         im.addProcessor(uiStage);
 		im.addProcessor(this);
@@ -394,7 +395,7 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 
 		//mydialog.welcome().show();
 		//mydialog.levelCompleted().show();
-		
+
 		table.addActor(ui.getAttackButton());
 		table.addActor(ui.getMoveButton());
 		table.addActor(ui.getHealthBar());
@@ -405,10 +406,10 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 
 		initScreen();
 		maps = new Maps(assests);
-		
-		
+
+
 	}
-	
+
 
 
 	@Override
@@ -417,11 +418,9 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 
 		Gdx.gl.glClearColor(0, 0, 0, 0);
 	    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
+
 		camera.position.set(player.getX() + player.getWidth() / 2, player.getY() + player.getHeight() / 2 , 0);
 		camera.update();
-		uiCamera.position.set(uiCamera.viewportWidth/2,uiCamera.viewportHeight/2,0);
-
 		batch.setProjectionMatrix(camera.combined);
 		shape.setProjectionMatrix(camera.combined);
 
@@ -439,16 +438,23 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 		{
 			if (actor.getPlayerState() == stdPlayerState.FINISH)
 			{
-				
-				actor.setPlayerState(stdPlayerState.WAITING);
+
+				if (actor.isActionDone() && actor.isMoveDone())
+				{
+					actor.setPlayerState(stdPlayerState.WAITING);
+				}
+				else
+				{
+					actor.setPlayerState(stdPlayerState.READY);
+				}
 			}
-			if(actor.getHP()<=0)
+			if (actor.getHP() <= 0)
 			{
 				actor.dead();
 				actor.setPlayerState(stdPlayerState.FINISH);
 
 			}
-			
+
 		}
 
 		if (maps.getMap()[(int)player.getX() / margen][(int)player.getY() / margen] == 5)
@@ -470,7 +476,7 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 			AIturn();
 		}
 		ui.getMessage().setText("");	
-	
+
 		maps.drawMap(batch, font, text);
 		ui.getHealthBar().setBarHP(player.getHP());
 
@@ -481,10 +487,10 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 
 		if (actingActor == player && player.getPlayerState() == stdPlayerState.ATTACK_TARGETING)
 		{
-			ui.getMessage().setText(ui.getAttackButton().getX()+"");
+			ui.getMessage().setText("Select Target"+player.getDefence());
 		}
-		
-		
+
+
 		stage.draw();
 		stage.act();
 		drawLights();
@@ -507,7 +513,7 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 
 
 			uiStage.getBatch().begin();
-			uiStage.getBatch().draw(actor.getTurnTexture(), uiViewport.getScreenWidth() - 34*3 - sangria, uiViewport.getScreenHeight() - 160 - 48*3 * turn, 32*3, 32*3);
+			uiStage.getBatch().draw(actor.getTurnTexture(), uiViewport.getScreenWidth() - 34 * 3 - sangria, uiViewport.getScreenHeight() - 160 - 48 * 3 * turn, 32 * 3, 32 * 3);
 			sangria = 0;
 
 			uiStage.getBatch().end();
@@ -520,7 +526,7 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 
 
 		}
-		
+
 		turn = 1;
 	}
 
@@ -625,13 +631,13 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 
 					actor.setPlayerState(stdPlayerState.READY);
 					actingActor = actor;
-					
+
 
 
 					if (readys.size() <= 5)
 					{
 						readys.add(actor);
-						
+
 					}
 
 				}
@@ -663,6 +669,8 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 					readys.add(actor);
 					//actor.setDefence(0);
 					actor.setFatigue(20);
+					actor.setActionDone(false);
+					actor.setMoveDone(false);
 				}
 			}
 		}		
@@ -702,37 +710,38 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 
 		//hmiHeight=360;
 		//hmiWidth=640;
-		camera.viewportHeight=p2/2;
-		camera.viewportWidth=p1/2;
-		
-		
+		camera.viewportHeight = p2 / 2;
+		camera.viewportWidth = p1 / 2;
+
+
 		uiViewport.setScreenWidth(p1);
 		uiViewport.setScreenHeight(p2);
-		
+		uiCamera.position.set(uiCamera.viewportWidth / 2, uiCamera.viewportHeight / 2, 0);
 //		uiCamera.update();
 		//uiViewport.setCamera(uiCamera);
-		
-		((OrthographicCamera)this.uiStage.getCamera()).setToOrtho(false,p1,p2);
-		
-		
-		if(p1>p2){
-		ui.getAttackButton().setPosition(p1 - margen*3-160, 0);
-		ui.getMoveButton().setPosition(p1  - margen*3*2-160, 0);		
-		ui.getGuardButton().setPosition(p1 - margen*3-160, margen*3);
-		ui.getItemButton().setPosition(p1 - margen*3*2-160, margen*3);
-		
+
+		((OrthographicCamera)this.uiStage.getCamera()).setToOrtho(false, p1, p2);
+
+
+		if (p1 > p2)
+		{
+			ui.getAttackButton().setPosition(p1 - margen * 3 - 160, 0);
+			ui.getMoveButton().setPosition(p1  - margen * 3 * 2 - 160, 0);		
+			ui.getGuardButton().setPosition(p1 - margen * 3 - 160, margen * 3);
+			ui.getItemButton().setPosition(p1 - margen * 3 * 2 - 160, margen * 3);
+
 		}
 		else
 		{
-			ui.getAttackButton().setPosition(p1 - margen*3, 0);
-			ui.getMoveButton().setPosition(p1  - margen*3 * 2, 0);		
-			ui.getGuardButton().setPosition(p1 - margen*3, margen*3);
-			ui.getItemButton().setPosition(p1 - margen*3 * 2, margen*3);
-			
-			
+			ui.getAttackButton().setPosition(p1 - margen * 3, 0);
+			ui.getMoveButton().setPosition(p1  - margen * 3 * 2, 0);		
+			ui.getGuardButton().setPosition(p1 - margen * 3, margen * 3);
+			ui.getItemButton().setPosition(p1 - margen * 3 * 2, margen * 3);
+
+
 		}
 // if lightBuffer was created before, dispose, we recreate a new one
-		
+
 
 	}
 
@@ -741,8 +750,8 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 	public void show()
 	{
 		//((OrthographicCamera)this.stage.getCamera()).zoom=.6f;
-		
-		
+
+
 		// TODO: Implement this method
 	}
 
@@ -780,18 +789,17 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 	public boolean touchDown(float p1, float p2, int p3, int p4)
 	{
 		// TODO: Implement this method
-		currentzoom=newzoom;
-		
+		currentzoom = newzoom;
+
 		return false;
 	}
 
 	public void AImove(MyActor actor)
 	{
-
-
-
+		
 		MyRect targetRect=new MyRect(9999, 9999, margen, margen);
-		if (actor.getPlayerState() == stdPlayerState.READY && !actor.isDead())
+		if (actor.getPlayerState() == stdPlayerState.READY && 
+			!actor.isDead())
 		{
 			actor.setPlayerState(stdPlayerState.WAITING_TO_MOVE);
 			drawRects(actor);
@@ -801,12 +809,18 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 				if (rect.isEnable() && rect.hasTarget)
 				{
 					rect.distance = (float)(Math.sqrt(Math.pow(player.getX() - rect.getX(), 2) + Math.pow(player.getY() - rect.getY(), 2)));
+					if(actor.isMoveDone()){
+						actor.setActionDone(true);
+						actor.setPlayerState(stdPlayerState.FINISH);
+					}
 				}
 
 				else
 				{
 					rect.distance = 9999;		
-					if (rect.contains(player.getX() + margen / 2, player.getY() + margen / 2) && actor.getPlayerState() != stdPlayerState.BEING_HITTING)
+					if (rect.contains(player.getX() + margen / 2, player.getY() + margen / 2) 
+						&& actor.getPlayerState() != stdPlayerState.BEING_HITTING
+						&& !actor.isActionDone())
 					{ 
 
 						if (actor.getX() < player.getX())
@@ -826,6 +840,7 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 						assests.swordAttackSound.play();
 						actor.setFatigue(50);
 						blood.createBlood(player);
+						actor.setActionDone(true);
 						//readys.remove(0);
 						return;
 					}
@@ -840,7 +855,7 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 				}		
 			}
 
-			if (targetRect.hasTarget())
+			if (targetRect.hasTarget() && !actor.isMoveDone())
 			{
 				actor.setCurX(targetRect.getX());
 				actor.setCurY(targetRect.getY());
@@ -856,10 +871,90 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 				assests.walkSound.play();
 				//readys.remove(0);
 				actor.setFatigue(20);
+				actor.setMoveDone(true);
 
 				return;
 			}
 		}
+	}
+
+	void playerActions()
+	{
+		if (player.getPlayerState() == stdPlayerState.WAITING_TO_MOVE)
+		{
+			for (MyRect rect: player.rects)
+			{
+				if (rect.contains(touchVec.x, touchVec.y) 
+					&& 
+					rect.hasTarget() && rect.isEnable())
+				{
+					player.setCurX(rect.getX());
+					player.setCurY(rect.getY());
+
+					if (player.getX() < player.getCurX())
+					{
+						player.setDir(1);
+					}
+					else
+					{
+						player.setDir(0);
+					}
+
+					player.setPlayerState(stdPlayerState.MOVING);
+					assests.walkSound.play();
+					player.setFatigue(player.WALK);
+					player.setMoveDone(true);
+
+					return;
+				}
+			}
+
+		}
+		if (player.getPlayerState() == stdPlayerState.ATTACK_TARGETING)
+		{
+			for (MyRect rect: player.rects)
+			{
+
+				if (rect.contains(touchVec.x, touchVec.y))
+				{
+					for (MyActor actor : actors)
+					{
+						if (actor.getRectangle().contains(touchVec.x, touchVec.y) && actor.getName() != player.getName())
+						{
+							actor.setDamage(player.getAttack());
+							actor.setPlayerState(stdPlayerState.BEING_HITTING);
+							player.setPlayerState(stdPlayerState.ATTACKING);
+							//enemy.setHP(enemy.getHP()-player.getAttack());
+							assests.swordAttackSound.play();
+							blood.createBlood(actor);
+							if (actor.getX() > player.getX())
+							{
+								player.setDir(1);
+							}
+							else
+							{
+								player.setDir(0);	
+							}
+							if (actor.getX() == player.getX())
+							{
+								player.setDir(2);
+							}
+
+							actingActor = actor;
+							player.setFatigue(player.ATTACK);
+							player.setActionDone(true);
+							//readys.remove(0);
+
+							//return false;
+							//player.setPlayerState(stdPlayerState.WAITING_OTHERS);
+
+						}
+					}
+				}
+
+			}
+		}
+
 	}
 
 	@Override
@@ -872,84 +967,9 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 
 		if (player.getPlayerState() != stdPlayerState.WAITING)
 		{
-			if (player.getPlayerState() == stdPlayerState.WAITING_TO_MOVE)
-			{
-				for (MyRect rect: player.rects)
-				{
-					if (rect.contains(touchVec.x, touchVec.y) 
-						&& 
-						rect.hasTarget() && rect.isEnable())
-					{
-						player.setCurX(rect.getX());
-						player.setCurY(rect.getY());
-
-						if (player.getX() < player.getCurX())
-						{
-							player.setDir(1);
-						}
-						else
-						{
-							player.setDir(0);
-						}
-
-
-
-						player.setPlayerState(stdPlayerState.MOVING);
-						assests.walkSound.play();
-						player.setFatigue(player.WALK);
-
-
-
-						//readys.remove(0);
-						return false;
-					}
-				}
-
-			}
-			if (player.getPlayerState() == stdPlayerState.ATTACK_TARGETING)
-			{
-				for (MyRect rect: player.rects)
-				{
-
-					if (rect.contains(touchVec.x, touchVec.y))
-					{
-						for (MyActor actor : actors)
-						{
-							if (actor.getRectangle().contains(touchVec.x, touchVec.y) && actor.getName() != player.getName())
-							{
-								actor.setDamage(player.getAttack());
-								actor.setPlayerState(stdPlayerState.BEING_HITTING);
-								player.setPlayerState(stdPlayerState.ATTACKING);
-								//enemy.setHP(enemy.getHP()-player.getAttack());
-								assests.swordAttackSound.play();
-								blood.createBlood(actor);
-								if (actor.getX() > player.getX())
-								{
-									player.setDir(1);
-								}
-								else
-								{
-									player.setDir(0);	
-								}
-								if (actor.getX() == player.getX())
-								{
-									player.setDir(2);
-								}
-
-								actingActor = actor;
-								player.setFatigue(player.ATTACK);
-								//readys.remove(0);
-
-								return false;
-								//player.setPlayerState(stdPlayerState.WAITING_OTHERS);
-
-							}
-						}
-					}
-
-				}
-			}
+			playerActions();
 		}
+
 
 
 		return false;
@@ -967,7 +987,7 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 	public boolean fling(float p1, float p2, int p3)
 	{
 
-		
+
 		return false;
 	}
 
@@ -992,32 +1012,32 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 	public boolean zoom(float inicialDistance, float finalDistance)
 	{
 		// TODO: Implement this method
-		
-		newzoom=(currentzoom+(inicialDistance-finalDistance)*.001f);
-		if(newzoom>1)
-			{
-			newzoom=1f;
-			}
-		if(newzoom<.3f)
+
+		newzoom = (currentzoom + (inicialDistance - finalDistance) * .001f);
+		if (newzoom > 1)
 		{
-			newzoom=.3f;
+			newzoom = 1f;
 		}
-		((OrthographicCamera)this.stage.getCamera()).zoom=newzoom;
-		
-		
+		if (newzoom < .3f)
+		{
+			newzoom = .3f;
+		}
+		((OrthographicCamera)this.stage.getCamera()).zoom = newzoom;
+
+
 		return false;
 	}
 
-	
+
 	@Override
 	public boolean pinch(Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4)
 	{
 		// TODO: Implement this method
-		
-		
+
+
 		return false;
 	}
-	
+
 	void drawLights()
 	{
 
@@ -1025,7 +1045,7 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 
 		if (lightBuffer != null) 
 			lightBuffer.dispose();
-			
+
 		lightBuffer = new FrameBuffer(Format.RGBA8888, (int)camera.viewportWidth, (int)camera.viewportHeight, false);
 		lightBuffer.getColorBufferTexture().setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
 		lightBufferRegion = new TextureRegion(lightBuffer.getColorBufferTexture(), 0, 0, (int)camera.viewportWidth, (int)camera.viewportHeight);
@@ -1049,11 +1069,11 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 		batch.setColor(0.9f, 0.9f, .9f, .9f);
 
 // tx and ty contain the center of the light source
-		float tx= (camera.position.x - camera.viewportWidth*newzoom / 2);
-		float ty= (camera.position.y - camera.viewportHeight*newzoom / 2);
+		float tx= (camera.position.x - camera.viewportWidth * newzoom / 2);
+		float ty= (camera.position.y - camera.viewportHeight * newzoom / 2);
 
-		float tw=camera.viewportWidth*newzoom;
-		float th=camera.viewportHeight*newzoom;
+		float tw=camera.viewportWidth * newzoom;
+		float th=camera.viewportHeight * newzoom;
 
 		float lightSize =256;
 

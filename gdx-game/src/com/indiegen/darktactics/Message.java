@@ -51,7 +51,7 @@ public class Message extends Actor
 		
 		font.setColor(Color.RED);
 		font.setScale(2f);
-		font.draw(batch, text, 300, 200);
+		font.draw(batch, text, 300, 300);
 
 	}
 }

@@ -30,8 +30,8 @@ public class HealthBar extends Actor
 		shape = new ShapeRenderer();
 		text="";
 		font = new BitmapFont();
-		setBarHP(160);
-		setMaxHP(160);
+		setBarHP(80);
+		setMaxHP(80);
 		setBarMP(80);
 		setX(256);
 		setY(160);

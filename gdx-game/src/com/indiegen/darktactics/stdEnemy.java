@@ -14,6 +14,35 @@ class stdEnemy extends MyActor implements stdActor
 {
 
 	@Override
+	public void setMoveDone(boolean moveDone)
+	{
+		// TODO: Implement this method
+		this.moveDone= moveDone;
+	}
+
+	@Override
+	public Boolean isMoveDone()
+	{
+		// TODO: Implement this method
+		return moveDone;
+	}
+
+	@Override
+	public void setActionDone(boolean actionDone)
+	{
+		// TODO: Implement this method
+		this.actionDone=actionDone;
+	}
+
+	@Override
+	public Boolean isActionDone()
+	{
+		// TODO: Implement this method
+		return actionDone;
+	}
+
+
+	@Override
 	public TextureRegion getTurnTexture()
 	{
 		// TODO: Implement this method
@@ -277,6 +306,8 @@ class stdEnemy extends MyActor implements stdActor
 
 	stdPlayerState actorState;
 	boolean acting=false;
+	boolean moveDone=false;
+	boolean actionDone=false;
 
 
 	public stdEnemy(Texture settexture)
