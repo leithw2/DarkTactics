@@ -90,8 +90,8 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 
 		player = new stdPlayer(playerTexture);
 		player.setPosition(margen * 1, margen * 1);
-		hmiHeight = 640;
-		hmiWidth = 360;
+		hmiHeight = 320;
+		hmiWidth = 180;
 		//healthBar.setBarHP(80);
 		//healthBar.maxHP = 120;
 
@@ -110,7 +110,7 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 		actors.add(new stdEnemy(enemyTexture, margen * 10, margen * 6, "2"));
 		actors.add(new stdEnemy(enemyTexture, margen * 5, margen * 5, "3"));
 		actors.add(new stdEnemy(enemyTexture, margen * 3, margen * 1, "4"));
-		//actors.add(new KingSkeleton(assests.kingSkeleton, margen*18,margen*6,"Boss"));
+		actors.add(new KingSkeleton(assests.kingSkeleton, margen*1,margen*2,"Boss"));
 
 		for (MyActor actor : actors)
 		{
@@ -145,7 +145,7 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 				ui.setUpItemSkin();
 
 				actingActor = player;
-				player.setFatigue(30);
+				player.setFatigue(player.getFatigue()+player.ITEM);
 
 				assests.potionSound.play();
 
@@ -170,7 +170,7 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 			{
 				player.setPlayerState(stdPlayerState.GUARD);
 				actingActor = player;
-				player.setFatigue(player.GUARD);
+				player.setFatigue(player.getFatigue()+player.GUARD);
 				player.setActionDone(true);
 			}
 		}
@@ -838,7 +838,7 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 						//enemy.setHP(enemy.getHP()-player.getAttack());
 						//assests
 						assests.swordAttackSound.play();
-						actor.setFatigue(50);
+						actor.setFatigue(actor.getFatigue()+50);
 						blood.createBlood(player);
 						actor.setActionDone(true);
 						//readys.remove(0);
@@ -870,7 +870,7 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 				actor.setPlayerState(stdPlayerState.MOVING);
 				assests.walkSound.play();
 				//readys.remove(0);
-				actor.setFatigue(20);
+				actor.setFatigue(actor.getFatigue()+20);
 				actor.setMoveDone(true);
 
 				return;
@@ -902,7 +902,7 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 
 					player.setPlayerState(stdPlayerState.MOVING);
 					assests.walkSound.play();
-					player.setFatigue(player.WALK);
+					player.setFatigue(player.getFatigue()+player.WALK);
 					player.setMoveDone(true);
 
 					return;
@@ -941,7 +941,7 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 							}
 
 							actingActor = actor;
-							player.setFatigue(player.ATTACK);
+							player.setFatigue(player.getFatigue()+player.ATTACK);
 							player.setActionDone(true);
 							//readys.remove(0);
 

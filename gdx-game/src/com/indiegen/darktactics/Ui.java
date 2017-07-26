@@ -177,6 +177,26 @@ public class Ui
 		skin.add("default", itemStyle);
 	}
 
+	public void setUpAttackSkin(){
+		itemStyle.up = skin.newDrawable("upItem2");
+		itemStyle.down = skin.newDrawable("down");
+		itemStyle.checked = skin.newDrawable("upItem2");
+		itemStyle.over = skin.newDrawable("white");
+
+		itemStyle.font = skin.getFont("default");
+		skin.add("default", itemStyle);
+	}
+	
+	public void setUpGuardSkin(){
+		itemStyle.up = skin.newDrawable("upItem2");
+		itemStyle.down = skin.newDrawable("down");
+		itemStyle.checked = skin.newDrawable("upItem2");
+		itemStyle.over = skin.newDrawable("white");
+
+		itemStyle.font = skin.getFont("default");
+		skin.add("default", itemStyle);
+	}
+
 	public void setCloseUp(CloseUp closeUp)
 	{
 		this.closeUp = closeUp;

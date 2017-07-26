@@ -16,9 +16,9 @@ public class KingSkeleton extends stdEnemy implements stdActor
 		setHP(190);
 		maxHP=190;
 		
-		margen=64;
-		setHeight(128);
-		setWidth(128);
+		margen=32;
+		setHeight(64);
+		setWidth(64);
 
 		setName("King Skeleton");
 
@@ -31,15 +31,19 @@ public class KingSkeleton extends stdEnemy implements stdActor
 		walkFrames = new TextureRegion[1];
 
 
-		walkFrames[0] = new TextureRegion(texture, 0,0, margen, margen);
+		walkFrames[0] = new TextureRegion(getTexture(), 0,0, margen, margen);
 
 		walk = new Animation(0.2f, walkFrames);
 		walk.setPlayMode(Animation.PlayMode.NORMAL);
 
-		waitFrames = new TextureRegion[1];
+		waitFrames = new TextureRegion[5];
 
 		waitFrames[0] = new TextureRegion(texture, 0,0, margen, margen);
-
+		waitFrames[1] = new TextureRegion(texture, margen,0, margen, margen);
+		waitFrames[2] = new TextureRegion(texture, margen*2,0, margen, margen);
+		waitFrames[3] = new TextureRegion(texture, margen*3,0, margen, margen);
+		waitFrames[4] = new TextureRegion(texture, margen*4,0, margen, margen);
+		
 		waitAnimation = new Animation(0.8f, waitFrames);
 		waitAnimation.setPlayMode(Animation.PlayMode.NORMAL);
 		
@@ -50,7 +54,7 @@ public class KingSkeleton extends stdEnemy implements stdActor
 
 		attackAnimation = new Animation(0.2f, attackFrames);
 		attackAnimation.setPlayMode(Animation.PlayMode.NORMAL);
-		setTurnTexture(new TextureRegion(texture,64,64,16,16));
+		setTurnTexture(new TextureRegion(texture,margen,margen,margen,margen));
 		
 		texture = getTexture();
 		rects.add(new MyRect(getX(), getY(), margen, margen));
@@ -61,7 +65,7 @@ public class KingSkeleton extends stdEnemy implements stdActor
 	public void moveRects()
 	{
 		// TODO: Implement this method
-		int margen=128;
+		int margen=64;
 		rects.clear();
 
 		rects.add(new MyRect(getX(), getY() + margen, margen/2, margen));
@@ -75,7 +79,7 @@ public class KingSkeleton extends stdEnemy implements stdActor
 	public void attackRects()
 	{
 		// TODO: Implement this method
-		int margen=128;
+		int margen=64;
 		rects.clear();
 
 		rects.add(new MyRect(getX(), getY() + margen, margen/2, margen));
@@ -87,9 +91,29 @@ public class KingSkeleton extends stdEnemy implements stdActor
 	
 	
 	@Override
-	KingSkeleton(Texture settexture,int x, int y, String name){
-		super(settexture,x,y,name);
-		
+	KingSkeleton(Texture texture,int x, int y, String name){
+		super(texture,x,y,name);
+		setTexture(texture);
+		initialice();
 	}
-	
+	@Override
+	public void setAnimation(int animations)
+	{
+		// TODO: Implement this method
+		delta=0;
+		switch(animations){
+			case 0:
+
+				animation=waitAnimation;
+				break;
+			case 1:
+
+				animation=walk;
+				break;
+			case 2:
+
+				animation=attackAnimation;
+				break;
+		}
+	}
 }
