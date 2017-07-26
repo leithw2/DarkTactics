@@ -106,6 +106,7 @@ public class screen implements Screen, GestureListener, callBack, Levels, InputP
 		music1.play();
 		music1.setVolume(0);
 
+		
 		actors.add(new stdEnemy(enemyTexture, margen * 4, margen * 5, "1"));
 		actors.add(new stdEnemy(enemyTexture, margen * 10, margen * 6, "2"));
 		actors.add(new stdEnemy(enemyTexture, margen * 5, margen * 5, "3"));
